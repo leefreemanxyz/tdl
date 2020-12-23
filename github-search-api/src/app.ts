@@ -1,12 +1,14 @@
 import express from "express";
 import cors from "cors";
-import { NotFoundError, errorHandler } from "@lfxyz/common";
+import { NotFoundError } from "./errors/NotFoundError";
 import { searchUsersRouter } from "./routes/searchUsers";
 import "express-async-errors";
 import { json } from "body-parser";
 import { getUserRouter } from "./routes/getUser";
+import { errorHandler } from "./middlewares/error-handler";
 
 const app = express();
+
 app.use(cors());
 app.use(json());
 

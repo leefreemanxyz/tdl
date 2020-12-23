@@ -4,21 +4,23 @@ import "./index.css";
 import App from "./App";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { WindowProvider } from "./providers/WindowProvider";
-
+import { LocationProvider } from "./providers/LocationContext";
 // Create a client
+import { BrowserRouter as Router } from "react-router-dom";
 
 const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <WindowProvider>
-        <div>
-          <CssBaseline />
-          <App />
-        </div>
-      </WindowProvider>
+      <Router>
+        <LocationProvider>
+          <div>
+            <CssBaseline />
+            <App />
+          </div>
+        </LocationProvider>
+      </Router>
     </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
