@@ -74,30 +74,33 @@ function UserCard({ username }: { username: string }) {
 
   return (
     user && (
-      <Card className={classes.root}>
+      <Card data-testid="user-result" className={classes.root}>
         <CardContent>
           <Grid container>
             <Grid
               container
+              item
               xs={4}
               direction="column"
               alignItems="center"
               justify="center"
             >
-              <Grid item>
+              <Grid>
                 <Avatar
                   className={classes.large}
                   alt=""
                   src={user.avatar_url}
                 />
               </Grid>
-              <Grid item>
-                <Typography>{user.login}</Typography>
+              <Grid>
+                <Typography data-testid={`username-${user.login}`}>
+                  {user.login}
+                </Typography>
               </Grid>
-              <Grid item>
+              <Grid>
                 <Typography>{user.name}</Typography>
               </Grid>
-              <Grid item>
+              <Grid>
                 <Typography>{user.location}</Typography>
               </Grid>
             </Grid>
@@ -107,24 +110,19 @@ function UserCard({ username }: { username: string }) {
                   {user.bio || "No user bio 😭"}
                 </Typography>
               </Grid>
-              <Grid item>
+              <Grid>
                 {user.company && <Chip label={`Works for: ${user.company}`} />}
-                {user.followers && (
-                  <Chip label={`Followers: ${user.followers}`} />
-                )}
-                {user.following && (
-                  <Chip label={`Following: ${user.following}`} />
-                )}
-                {user.public_repos && (
-                  <Chip label={`Public repos: ${user.public_repos}`} />
-                )}
-                {user.public_gists && (
-                  <Chip label={`Public gists: ${user.public_gists}`} />
-                )}
+                <Chip label={`Followers: ${user.followers}`} />
+                <Chip label={`Following: ${user.following}`} />
+                <Chip label={`Public repos: ${user.public_repos}`} />
+                <Chip label={`Public gists: ${user.public_gists}`} />
               </Grid>
               <Grid>
                 {user.twitter_username && (
-                  <Link href={`https://twitter.com/${user.twitter_username}`}>
+                  <Link
+                    data-testid={`twitter-${user.login}`}
+                    href={`https://twitter.com/${user.twitter_username}`}
+                  >
                     <Chip
                       clickable
                       icon={<Twitter />}
@@ -133,12 +131,15 @@ function UserCard({ username }: { username: string }) {
                   </Link>
                 )}
                 {user.blog && (
-                  <Link href={user.blog}>
+                  <Link data-testid={`personal-${user.login}`} href={user.blog}>
                     <Chip clickable icon={<Web />} label="Personal site" />
                   </Link>
                 )}
                 {user.html_url && (
-                  <Link href={user.html_url}>
+                  <Link
+                    data-testid={`github-${user.login}`}
+                    href={user.html_url}
+                  >
                     <Chip clickable icon={<GitHub />} label="GitHub" />
                   </Link>
                 )}

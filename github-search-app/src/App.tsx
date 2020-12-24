@@ -48,7 +48,7 @@ function App() {
   const numberOfPages =
     Math.min(Math.ceil(data?.data?.total_count / 10), 100) ?? 0;
   const showPagination = numberOfPages > 1;
-  console.log(isLoading);
+
   const totalCount = data?.data?.total_count ?? false;
   return (
     <div>
@@ -56,6 +56,7 @@ function App() {
         <Toolbar>
           <Container>
             <TextField
+              data-testid="search-input"
               placeholder="Search"
               onChange={handleSetQuery}
               value={searchTerm}
@@ -68,7 +69,15 @@ function App() {
       <Container>
         {isError && <Alert severity="error">Something went wrong!</Alert>}
         {totalCount && (
-          <Typography variant="h3">Total count: {totalCount}</Typography>
+          <Typography variant="h5">
+            Total count: <span data-testid="total-count">{totalCount}</span>
+          </Typography>
+        )}
+        {showPagination && (
+          <Typography>
+            Page: <span data-testid="current-page">{page}</span> /{" "}
+            <span data-testid="total-pages">{numberOfPages}</span>
+          </Typography>
         )}
         {data?.data?.items.map((item: any) => {
           return <UserCard key={item.login} username={item.login} />;
