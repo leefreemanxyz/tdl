@@ -26,7 +26,8 @@ const useStyles = makeStyles((theme) => ({
     height: theme.spacing(10),
   },
   root: {
-    margin: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
     "& > *": {
       margin: theme.spacing(1),
     },
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const getUserDetail = ({ queryKey }: { queryKey: any }) => {
-  const [_, { username }] = queryKey;
+  const [, { username }] = queryKey;
   return axios.get(`${API_URL}/user/${username}`);
 };
 

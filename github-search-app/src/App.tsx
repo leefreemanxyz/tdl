@@ -2,22 +2,23 @@ import {
   AppBar,
   Container,
   LinearProgress,
-  TextField,
   Toolbar,
-  Typography,
   Grid,
 } from "@material-ui/core";
-import { Alert, Pagination } from "@material-ui/lab";
+import { Alert } from "@material-ui/lab";
 import axios from "axios";
-import { useState } from "react";
+import { SyntheticEvent } from "react";
 import { useQuery } from "react-query";
 import UserCard from "./components/UserCard";
+import Pagination from "./components/Pagination";
 import { API_URL } from "./const";
 import useDebounce from "./hooks/useDebounce";
 import { useLocationContext } from "./providers/LocationContext";
+import MetaInfo from "./components/MetaInfo";
+import TextField from "./components/TextField";
 
 const searchGithub = ({ queryKey }: { queryKey: any }) => {
-  const [_, { q, page, per_page = 10 }] = queryKey;
+  const [, { q, page, per_page = 10 }] = queryKey;
   return axios.get(
     `${API_URL}/search/users?q=${q} type:user&page=${page}&per_page=${per_page}`
   );
@@ -25,8 +26,8 @@ const searchGithub = ({ queryKey }: { queryKey: any }) => {
 
 function App() {
   const { params, urlDispatch } = useLocationContext();
-  const [page, setPage] = useState(1);
   const searchTerm = params.get("q") || "";
+  const page = params.get("page") || 1;
   const debouncedQ = useDebounce(searchTerm, 400);
 
   const { data, isLoading, isError } = useQuery(
@@ -38,12 +39,23 @@ function App() {
     }
   );
 
-  const handleSetQuery = (e: any) => {
-    urlDispatch({ type: "set", payload: { key: "q", value: e.target.value } });
+  const handleSetQuery = (
+    e: SyntheticEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    urlDispatch({
+      type: "set",
+      payload: { key: "q", value: e.currentTarget.value },
+    });
   };
 
-  const handleChangePage = (e: any, value: any) => {
-    setPage(value);
+  const handleChangePage = (
+    _: SyntheticEvent<HTMLButtonElement>,
+    value: number
+  ) => {
+    urlDispatch({
+      type: "set",
+      payload: { key: "page", value: String(value) },
+    });
   };
 
   const numberOfPages =
@@ -51,52 +63,38 @@ function App() {
   const showPagination = numberOfPages > 1;
 
   const totalCount = data?.data?.total_count ?? false;
+
   return (
     <div>
       <AppBar position="sticky">
         <Toolbar>
           <Container>
-            <TextField
-              data-testid="search-input"
-              placeholder="Search"
-              onChange={handleSetQuery}
-              value={searchTerm}
-              fullWidth
-            />
+            <Grid>
+              <TextField onChange={handleSetQuery} searchTerm={searchTerm} />
+            </Grid>
           </Container>
         </Toolbar>
         {isLoading && <LinearProgress color="secondary" />}
       </AppBar>
       <Container>
         {isError && <Alert severity="error">Something went wrong!</Alert>}
-        {totalCount && (
-          <Typography variant="h5">
-            Total count: <span data-testid="total-count">{totalCount}</span>
-          </Typography>
-        )}
-        {showPagination && (
-          <Typography>
-            Page: <span data-testid="current-page">{page}</span> /{" "}
-            <span data-testid="total-pages">{numberOfPages}</span>
-          </Typography>
-        )}
+        <MetaInfo
+          totalCount={totalCount}
+          showPagination={showPagination}
+          page={Number(page)}
+          numberOfPages={numberOfPages}
+        />
         {data?.data?.items.map((item: any) => {
           return <UserCard key={item.login} username={item.login} />;
         })}
       </Container>
-      <Container>
-        <Grid container alignItems="center" justify="center">
-          <Grid item>
-            {showPagination && (
-              <Pagination
-                count={numberOfPages}
-                page={page}
-                onChange={handleChangePage}
-              />
-            )}
-          </Grid>
-        </Grid>
-      </Container>
+      {showPagination && (
+        <Pagination
+          numberOfPages={numberOfPages}
+          page={Number(page)}
+          handleChangePage={handleChangePage}
+        />
+      )}
     </div>
   );
 }
