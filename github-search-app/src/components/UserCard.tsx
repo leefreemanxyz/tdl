@@ -16,6 +16,20 @@ import { Alert } from "@material-ui/lab";
 import { GitHub, Twitter, Web } from "@material-ui/icons";
 import { API_URL } from "../const";
 
+const getValidUrl = (url = "") => {
+  let newUrl = window.decodeURIComponent(url);
+  newUrl = newUrl.trim().replace(/\s/g, "");
+
+  if (/^(:\/\/)/.test(newUrl)) {
+    return `http${newUrl}`;
+  }
+  if (!/^(f|ht)tps?:\/\//i.test(newUrl)) {
+    return `http://${newUrl}`;
+  }
+
+  return newUrl;
+};
+
 const useStyles = makeStyles((theme) => ({
   small: {
     width: theme.spacing(3),
@@ -139,7 +153,10 @@ function UserCard({ username }: { username: string }) {
                   </Link>
                 )}
                 {user.blog && (
-                  <Link data-testid={`personal-${user.login}`} href={user.blog}>
+                  <Link
+                    data-testid={`personal-${user.login}`}
+                    href={getValidUrl(user.blog)}
+                  >
                     <Chip clickable icon={<Web />} label="Personal site" />
                   </Link>
                 )}
