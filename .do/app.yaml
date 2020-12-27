@@ -1,0 +1,25 @@
+name: tdl
+
+static_sites:
+  - name: app
+    environment_slug: node-js
+    github:
+      repo: leefreemanxyz/tdl
+      branch: main
+      deploy_on_push: true
+    source_dir: github-search-app
+    routes:
+      - path: /
+
+services:
+  - name: api
+    build_command: npm run build
+    run_command: npm run serve
+    environment_slug: node-js
+    github:
+      repo: leefreemanxyz/tdl
+      branch: main
+      deploy_on_push: true
+    source_dir: github-search-api
+    routes:
+      - path: /api
