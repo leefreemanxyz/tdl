@@ -14,6 +14,7 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import { Alert } from "@material-ui/lab";
 import { GitHub, Twitter, Web } from "@material-ui/icons";
+import { API_URL } from "../const";
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const getUserDetail = ({ queryKey }: { queryKey: any }) => {
   const [_, { username }] = queryKey;
-  return axios.get(`http://localhost:3001/user/${username}`);
+  return axios.get(`$${API_URL}/user/${username}`);
 };
 
 function UserCard({ username }: { username: string }) {
@@ -104,7 +105,13 @@ function UserCard({ username }: { username: string }) {
                 <Typography>{user.location}</Typography>
               </Grid>
             </Grid>
-            <Grid container xs={8} direction="column" justify="space-between">
+            <Grid
+              container
+              item
+              xs={8}
+              direction="column"
+              justify="space-between"
+            >
               <Grid>
                 <Typography variant="body1">
                   {user.bio || "No user bio 😭"}

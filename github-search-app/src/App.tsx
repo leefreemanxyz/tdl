@@ -12,13 +12,14 @@ import axios from "axios";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import UserCard from "./components/UserCard";
+import { API_URL } from "./const";
 import useDebounce from "./hooks/useDebounce";
 import { useLocationContext } from "./providers/LocationContext";
 
 const searchGithub = ({ queryKey }: { queryKey: any }) => {
   const [_, { q, page, per_page = 10 }] = queryKey;
   return axios.get(
-    `http://localhost:3001/search/users?q=${q} type:user&page=${page}&per_page=${per_page}`
+    `${API_URL}/search/users?q=${q} type:user&page=${page}&per_page=${per_page}`
   );
 };
 
