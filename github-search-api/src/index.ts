@@ -7,7 +7,7 @@ const start = () => {
     throw new Error("GITHUB_TOKEN not defined");
   }
   app.listen(PORT, () => {
-    console.log("listening on localhost:3001");
+    console.log(`listening on port:${PORT}`);
   });
 };
 start();
