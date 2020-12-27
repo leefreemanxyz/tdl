@@ -14,7 +14,11 @@ This type of data could definitely be cached (depending on the GitHub API's T&Cs
 
 It would also have been possible to create a magic endpoint that executes the search and then gets the user data before returning it but :woman_shrugging:.
 
+(To run the server locally you'll need to `npm i`, supply your own environment variable for GITHUB_TOKEN and `npm run start` for development mode watching etc.)
+
 ## Client
+
+To run: `npm i` and `npm run start`.
 
 This is a Create React App with Material UI for component styling and React Query for API request management. This is the first time using it, and it evokes similar feelings to using SWR or Apollo Client => loading/error states are handled automatically and queries refetch when their dependent variables change (I've worked a lot with GraphQL/Apollo Client/Server in the past and wanted to try something different).
 
@@ -26,7 +30,7 @@ I decided that the UserCard components should be able to fetch data about themse
 
 ## Testing
 
-I've used Testing Library to write a unit test of UserCard and written a couple of end-to-end tests with Cypress.
+I've used Testing Library to write a unit test of UserCard (`npm run test`) and written a couple of end-to-end tests with Cypress (`npm run cypress:open`).
 
 ## Deployment
 

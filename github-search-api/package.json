@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --no-cache",
     "start": "ts-node-dev src/index.ts",
     "build": "tsc",
     "serve": "node dist/index.js"
