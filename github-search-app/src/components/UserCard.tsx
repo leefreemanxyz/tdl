@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 const getUserDetail = ({ queryKey }: { queryKey: any }) => {
   const [_, { username }] = queryKey;
-  return axios.get(`$${API_URL}/user/${username}`);
+  return axios.get(`${API_URL}/user/${username}`);
 };
 
 function UserCard({ username }: { username: string }) {
